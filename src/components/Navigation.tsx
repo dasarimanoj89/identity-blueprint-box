@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -62,7 +61,6 @@ const Navigation = () => {
           ))}
         </div>
         <div className="flex items-center gap-2 pr-2">
-          <ThemeToggle />
           <Button
             variant="ghost"
             size="icon"

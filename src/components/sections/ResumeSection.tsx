@@ -1,6 +1,42 @@
+import { useState, useEffect } from "react";
 import { GraduationCap, Briefcase } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 const ResumeSection = () => {
+  const [profile, setProfile] = useState<any>(null);
+
+  useEffect(() => {
+    loadProfile();
+  }, []);
+
+  const loadProfile = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      setProfile(data);
+    } catch (error) {
+      console.error("Error loading profile:", error);
+    }
+  };
+
+  const defaultEducation = [
+    { title: "Bachelor of Computer Science", institution: "University of Technology", period: "2015 - 2019", description: "Focused on software engineering" }
+  ];
+
+  const defaultExperience = [
+    { title: "Senior Frontend Developer", institution: "Tech Solutions Inc.", period: "2021 - Present", description: "Leading development of modern web applications" }
+  ];
+
+  const education = profile?.education?.length > 0 ? profile.education : defaultEducation;
+  const experience = profile?.experience?.length > 0 ? profile.experience : defaultExperience;
+
   return (
     <section id="resume" className="min-h-screen p-12 bg-card/30">
       <div className="max-w-4xl mx-auto">
@@ -18,18 +54,9 @@ const ResumeSection = () => {
             </div>
             
             <div className="space-y-6">
-              <ResumeItem
-                title="Bachelor of Computer Science"
-                institution="University of Technology"
-                period="2015 - 2019"
-                description="Focused on software engineering, web technologies, and computer systems. Graduated with honors."
-              />
-              <ResumeItem
-                title="Full Stack Web Development"
-                institution="Tech Bootcamp"
-                period="2019"
-                description="Intensive program covering modern web development frameworks, databases, and deployment strategies."
-              />
+              {education.map((item: any, index: number) => (
+                <ResumeItem key={index} {...item} />
+              ))}
             </div>
           </div>
           
@@ -42,18 +69,9 @@ const ResumeSection = () => {
             </div>
             
             <div className="space-y-6">
-              <ResumeItem
-                title="Senior Frontend Developer"
-                institution="Tech Solutions Inc."
-                period="2021 - Present"
-                description="Leading development of modern web applications using React, TypeScript, and cutting-edge technologies. Mentoring junior developers and establishing best practices."
-              />
-              <ResumeItem
-                title="Full Stack Developer"
-                institution="Digital Agency"
-                period="2019 - 2021"
-                description="Developed and maintained multiple client websites and web applications. Collaborated with designers and project managers to deliver high-quality solutions."
-              />
+              {experience.map((item: any, index: number) => (
+                <ResumeItem key={index} {...item} />
+              ))}
             </div>
           </div>
         </div>

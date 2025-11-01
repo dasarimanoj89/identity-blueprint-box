@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { LogOut, Settings } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { SettingsDialog } from "@/components/SettingsDialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +17,7 @@ import {
 
 const Navigation = () => {
   const [activeSection, setActiveSection] = useState("about");
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
   
@@ -84,6 +86,10 @@ const Navigation = () => {
             <DropdownMenuContent align="end" className="w-56 bg-card z-50">
               <DropdownMenuLabel>Settings</DropdownMenuLabel>
               <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => setSettingsOpen(true)} className="cursor-pointer">
+                <Settings className="mr-2 h-4 w-4" />
+                <span>Edit Profile</span>
+              </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <div className="flex items-center justify-between w-full cursor-pointer">
                   <span>Theme</span>
@@ -99,6 +105,7 @@ const Navigation = () => {
           </DropdownMenu>
         </div>
       </div>
+      <SettingsDialog open={settingsOpen} onOpenChange={setSettingsOpen} />
     </nav>
   );
 };

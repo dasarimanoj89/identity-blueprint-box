@@ -1,36 +1,37 @@
+import { useState, useEffect } from "react";
 import { ExternalLink, Github } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 const PortfolioSection = () => {
-  const projects = [
-    {
-      title: "E-Commerce Platform",
-      description: "A full-featured online shopping platform with payment integration, inventory management, and user authentication.",
-      tags: ["React", "Node.js", "MongoDB"],
-      link: "#",
-      github: "#"
-    },
-    {
-      title: "Project Management Tool",
-      description: "Collaborative project management application with real-time updates, task tracking, and team communication.",
-      tags: ["TypeScript", "React", "Firebase"],
-      link: "#",
-      github: "#"
-    },
-    {
-      title: "Portfolio Website",
-      description: "Modern, responsive portfolio website with smooth animations and optimized performance.",
-      tags: ["React", "Tailwind CSS", "Vite"],
-      link: "#",
-      github: "#"
-    },
-    {
-      title: "Weather Dashboard",
-      description: "Real-time weather application with forecasts, location search, and interactive maps.",
-      tags: ["React", "API Integration", "Charts"],
-      link: "#",
-      github: "#"
-    },
+  const [profile, setProfile] = useState<any>(null);
+
+  useEffect(() => {
+    loadProfile();
+  }, []);
+
+  const loadProfile = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      setProfile(data);
+    } catch (error) {
+      console.error("Error loading profile:", error);
+    }
+  };
+
+  const defaultProjects = [
+    { title: "E-Commerce Platform", description: "A full-featured online shopping platform", tags: ["React", "Node.js"], link: "#", github: "#" },
+    { title: "Portfolio Website", description: "Modern, responsive portfolio website", tags: ["React", "Tailwind CSS"], link: "#", github: "#" }
   ];
+
+  const projects = profile?.projects?.length > 0 ? profile.projects : defaultProjects;
   
   return (
     <section id="portfolio" className="min-h-screen p-12">
@@ -40,7 +41,7 @@ const PortfolioSection = () => {
         </h2>
         
         <div className="grid md:grid-cols-2 gap-6">
-          {projects.map((project, index) => (
+          {projects.map((project: any, index: number) => (
             <ProjectCard key={index} {...project} />
           ))}
         </div>

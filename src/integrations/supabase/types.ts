@@ -16,30 +16,66 @@ export type Database = {
     Tables: {
       profiles: {
         Row: {
+          about_text: string | null
           avatar_url: string | null
           bio: string | null
+          birthday: string | null
           created_at: string
+          education: Json | null
+          email: string | null
+          experience: Json | null
           full_name: string | null
+          github_url: string | null
           id: string
+          job_title: string | null
+          linkedin_url: string | null
           location: string | null
+          phone: string | null
+          projects: Json | null
+          skills: Json | null
+          twitter_url: string | null
           updated_at: string
         }
         Insert: {
+          about_text?: string | null
           avatar_url?: string | null
           bio?: string | null
+          birthday?: string | null
           created_at?: string
+          education?: Json | null
+          email?: string | null
+          experience?: Json | null
           full_name?: string | null
+          github_url?: string | null
           id: string
+          job_title?: string | null
+          linkedin_url?: string | null
           location?: string | null
+          phone?: string | null
+          projects?: Json | null
+          skills?: Json | null
+          twitter_url?: string | null
           updated_at?: string
         }
         Update: {
+          about_text?: string | null
           avatar_url?: string | null
           bio?: string | null
+          birthday?: string | null
           created_at?: string
+          education?: Json | null
+          email?: string | null
+          experience?: Json | null
           full_name?: string | null
+          github_url?: string | null
           id?: string
+          job_title?: string | null
+          linkedin_url?: string | null
           location?: string | null
+          phone?: string | null
+          projects?: Json | null
+          skills?: Json | null
+          twitter_url?: string | null
           updated_at?: string
         }
         Relationships: []
